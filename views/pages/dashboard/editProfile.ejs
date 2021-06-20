@@ -1,0 +1,205 @@
+<%-include("../../partials/header.ejs",{title:"Create Your Profile"})%>
+<link rel="stylesheet" href="/css/croppie.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css
+">
+</head>
+<style>
+    #uploadMessage {
+        display: none;
+    }
+</style>
+
+<body>
+
+    <div class="container">
+        <%-include("../../partials/nav.ejs")%>
+
+        <div class="row">
+            <div class="col-md-4">
+                <%-include("../../partials/sidebar.ejs")%>
+
+            </div>
+            <div class="col-sm-8 m-auto">
+                <div style="width: 600px"
+                    class=" card mt-3 rounded rounded-3 border border-secondery border-gradient border-2">
+                    <div class="m-auto card-body py-3">
+
+                        <%- include("../../partials/alert.ejs") %>
+<div id="uploadMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+   
+   
+ 
+</div>
+                    
+                        <div style="width: 200px;height: 200px;">
+                            <img id="showImage" src="<%=user.profilePics%>" class="img-thumbnail" alt="Avater" />
+                        </div>
+
+                        <form class="my-3" id="uploadPicsForm" action="/profile/edit-profile/uploadPics" method="POST"
+                            enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label class="form-label" for="uploadImage">Change Profile Pics</label>
+                                <input type="file" name="uploadImage" id="uploadImage" class="form-control"
+                                    accept="image/*" required, />
+                            </div>
+                        </form>
+                        <div id="sideBar">
+                            <form action="/profile/edit-profile" method="POST" novalidate>
+
+                                <div class="mb-3">
+                                    <label for="username" class="form-label">Change name</label>
+
+                                    <input class="form-control <%=error.name?'is-invalid':''%>" type="url"
+                                        name="username" id="username" value="<%=user.name%> " required>
+
+                                    <%if(error.username){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.username%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="profileTitle" class="form-label">Title
+                                    </label>
+
+                                    <textarea name="profileTitle"
+                                        class="form-control <%=error.profileTitle?'is-invalid':''%>" id="profileTitle"
+                                        cols="50" rows="2" placeholder="Enter a title"><%= profile.title  %> </textarea>
+
+                                    <%if(error.profileTitle){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.profileTitle%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="profileBio" class="form-label">Bio
+                                    </label>
+
+                                    <textarea name="profileBio"
+                                        class="form-control <%=error.profileBio?'is-invalid':''%>" id="profileBio"
+                                        cols="50" rows="2"
+                                        placeholder="Enter about yourself"><%=profile.bio %> </textarea>
+
+                                    <%if(error.profileBio){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.profileBio%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+
+                                </div>
+                                <div class="mb-3">
+                                    <label for="websiteLink" class="form-label">Website Link
+                                        <sup style="color:red">(optional)</sup></label>
+
+                                    <input class="form-control <%=error.websiteLink?'is-invalid':''%>" type="url"
+                                        name="websiteLink" id="websiteLink" value="<%=profile.links.website%>" required>
+
+                                    <%if(error.websiteLink){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.websiteLink%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="facebookLink" class="form-label">Facebook <sup
+                                            style="color:red">(optional)</sup></label>
+
+                                    <input class="form-control <%=error.facebookLink?'is-invalid':''%>" type="url"
+                                        name="facebookLink" id="facebookLink" value="<%=profile.links.facebook%>"
+                                        required>
+
+                                    <%if(error.facebookLink){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.facebookLink%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="twitterLink" class="form-label">Twitter <sup
+                                            style="color:red">(optional)</sup></label>
+
+                                    <input class="form-control <%=error.twitterLink?'is-invalid':''%>" type="url"
+                                        name="twitterLink" id="twitterLink" value="<%=profile.links.twitter%>" required>
+
+                                    <%if(error.twitterLink){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.twitterLink%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="githubLink" class="form-label">Github <sup
+                                            style="color:red">(optional)</sup></label>
+                                    <input class="form-control <%=error.githubLink?'is-invalid':''%>" type="url"
+                                        name="githubLink" id="githubLink" value="<%=profile.links.github%>" required>
+
+                                    <%if(error.githubLink){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.githubLink%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+
+
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <button class="btn btn-primary" type="submit">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="modal" id="crop-modal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Crop Your Image</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="croppedImage">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel cropping
+                            </button>
+                            <button id="uploadButton" class="btn btn-primary">
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="/scripts/jquery/jquery-3.6.0.min.js"></script>
+    <script src="/scripts/croppie.min.js"></script>
+    <script src="/scripts/editProfileScript.js"></script>
+
+
+    <%-include("../../partials/footer.ejs")%>
+</body>
+
+</html>

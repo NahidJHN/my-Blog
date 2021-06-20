@@ -1,0 +1,62 @@
+<%-include("../../partials/header.ejs")%>
+</head>
+<body>
+<div class="container">
+     <%-include("../../partials/nav.ejs")%>
+
+    <div class="row">
+        <div class="col-sm-6 m-auto">
+            <div
+                style="width: 450px"
+                class="m-auto card mt-5 rounded rounded-3 border border-secondery border-gradient border-2 p-5"
+            >
+            <%- include("../../partials/alert.ejs") %> 
+                <div class="m-auto card-body py-3">
+                    <h1 class="">Login to your account</h1>
+                    <form class="from-group" action="/auth/login" method="POST" novalidate>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="Enter email"
+                                class="form-control <%=error.email? 'is-invalid':''%>"
+                                required
+                            />
+                            <%if(error.email){%>
+                            <div class="invalid-feedback"><strong><%=error.email%></strong></div>
+                            <% }%>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="passsword"
+                                placeholder="Enter password"
+                                class="form-control <%=error.password? 'is-invalid':''%>"
+                                required
+                            />
+
+                            <%if(error.password){%>
+                            <div class="invalid-feedback"><strong><%=error.password%></strong></div>
+                            <% }%>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </form>
+                    <p class="my-3">
+                        Do you have any account ?
+                        <a class="mx-2" href="/auth/register">Register</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-include("../../partials/footer.ejs")%>
+</body>
+</html>

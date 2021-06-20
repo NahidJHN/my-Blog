@@ -1,0 +1,236 @@
+<%-include("../../partials/header.ejs")%>
+<style>
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+
+  html {
+    height: -webkit-fill-available;
+  }
+
+  main {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    height: -webkit-fill-available;
+    max-height: 100vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .b-example-divider {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .1);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+  }
+
+  .bi {
+    vertical-align: -.125em;
+    pointer-events: none;
+    fill: currentColor;
+  }
+
+  .dropdown-toggle {
+    outline: 0;
+  }
+
+  .nav-flush .nav-link {
+    border-radius: 0;
+  }
+
+  .btn-toggle {
+    display: inline-flex;
+    align-items: center;
+    padding: .25rem .5rem;
+    font-weight: 600;
+    color: rgba(0, 0, 0, .65);
+    background-color: transparent;
+    border: 0;
+  }
+
+  .btn-toggle:hover,
+  .btn-toggle:focus {
+    color: rgba(0, 0, 0, .85);
+    background-color: #d2f4ea;
+  }
+
+  .btn-toggle::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+    transition: transform .35s ease;
+    transform-origin: .5em 50%;
+  }
+
+  .btn-toggle[aria-expanded="true"] {
+    color: rgba(0, 0, 0, .85);
+  }
+
+  .btn-toggle[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+  }
+
+  .btn-toggle-nav a {
+    display: inline-flex;
+    padding: .1875rem .5rem;
+    margin-top: .125rem;
+    margin-left: 1.25rem;
+    text-decoration: none;
+  }
+
+  .btn-toggle-nav a:hover,
+  .btn-toggle-nav a:focus {
+    background-color: #d2f4ea;
+  }
+
+  .scrollarea {
+    overflow-y: auto;
+  }
+
+  .fw-semibold {
+    font-weight: 600;
+  }
+
+  .lh-tight {
+    line-height: 1.25;
+  }
+
+
+  /* custom */
+  .likeComment {
+    padding: 2px;
+    margin-bottom: 0 !important
+  }
+
+  .likeComment li {
+    cursor: pointer;
+  }
+
+  .addBorder {
+    border-top-width: 1px !important
+  }
+
+  #post_card {
+    border: none;
+    padding: 2px;
+    box-shadow: -0.5px 0.5px 4px 0px #6d6464;
+  }
+</style>
+<script src="https://kit.fontawesome.com/1ad4267c2c.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+
+    <%-include("../../partials/nav.ejs")%>
+
+
+
+    <div class="row">
+
+      <div class="col-md-4">
+        <%-include("../../partials/sidebar.ejs")%>
+
+      </div>
+      <div class="col-md-8">
+        <section class="mb-5">
+          <a href="/post/all-post?filter=latest"
+            class="btn <%= filter==='latest'?'btn-primary':'btn-secondary' %> ">Latest</a>
+          <a href="/post/all-post?filter=week"
+            class="btn <%= filter==='week'?'btn-primary':'btn-secondary' %> ">Week</a>
+          <a href="/post/all-post?filter=month"
+            class="btn <%= filter==='month'?'btn-primary':'btn-secondary' %> ">Month</a>
+          <a href="/post/all-post?filter=all" class="btn <%= filter==='all'?'btn-primary':'btn-secondary' %> ">All</a>
+        </section>
+        <%- include("../../partials/alert.ejs") %>
+        <% if (posts.length!==0) { %>
+        <%for(let post of posts){%>
+
+        <div id="post_card" class="card my-3 p-2" style="width: 32rem;margin-left: 25px;">
+          <div class="d-flex p-2">
+            <div style="margin-right: 10px;"><img style="width:35px; height:35px" src="<%=post.author.profilePics%>"
+                class="rounded-circle" alt="<%=post.author.name%>"></div>
+            <div>
+              <strong style="line-height: 2;margin-bottom: 0;"><a href="/profile/<%=post.author._id%> "><%=post.author.name%></a> </strong> <span> posted about
+                <%= post.title%></span>
+              <p style="color:lightslategray;margin-bottom: 0px;"> <span><%=moment(post.createdAt)%></span>
+              </p>
+
+            </div>
+          </div>
+          <% if (post.thumbnail) { %>
+          <img style='width:100%;height:250px' src="<%= post.thumbnail %> " class="card-img-top" alt="...">
+          <% } %>
+          <div class="card-body">
+            <h5 class="card-title"><%= post.title %> </h5>
+            <p class="card-text"><%= truncate(post.body) %> <a href="/post/<%=post._id%>"
+                style="text-decoration:none"><strong>See more</strong> </a> &nbsp;&nbsp; <small
+                style="color:lightslategray;text-align: end;margin-left: 100px;"><%= post.readTime %> </small> </p>
+          </div>
+
+          <ul class="d-flex likeComment">
+            <li data-postid="<%= post._id %>"
+              class="list-group-item addBorder flex-fill text-center likePost <%=user&&post.likes.includes(user._id)?'text-primary':''%>">
+              <i class="far fa-thumbs-up"></i>
+              <%=user&&post.likes.includes(user._id)?"Liked":"Like"%> (<%=post.likes.length%>)</li>
+
+            <li data-postid="<%= post._id %>"
+              class="list-group-item addBorder flex-fill text-center dislikePost <%=user&&post.dislikes.includes(user._id)?'text-warning':''%>">
+              <i class="far fa-thumbs-down"></i>
+              <%=user&&post.dislikes.includes(user._id)?"Disliked":"Dislike"%> (<%=post.dislikes.length%>)</li>
+            <li class="list-group-item addBorder flex-fill text-center"><a style="text-decoration: none;color:#212529;"
+                href="/post/<%=post._id%>"> Comment <%= post.comment.length%></a></li>
+          </ul>
+
+
+
+        </div>
+
+        <%}%>
+ <%if(totalPage>1){%>
+
+              <nav>
+         <ul class="pagination">
+           <li class="page-item <%= currentPage===1?'disabled':'' %> ">
+        <a class="page-link" href="<%=`/post/all-post?filter=${filter}&page=${currentPage-1}`%> ">Pervious</a>
+        </li>
+
+        <% for(let i=1;i<=totalPage;i++){ %>
+        <li class="page-item <%= currentPage===i? 'active':'' %> ">
+          <a class="page-link" href="<%=`/post/all-post?filter=${filter}&page=${i}` %> "><%= i%> </a>
+        </li>
+        <% } %>
+
+        <li class="page-item <%= currentPage>=totalPage? 'disabled':'' %> ">
+          <a class="page-link" href="<%=`/post/all-post?filter=${filter}&page=${currentPage+1}` %> ">Next</a>
+        </li>
+        </ul>
+        </nav>
+
+ <%}%>
+
+        <% }else{%>
+
+        <div class="container">
+          <h2>
+            You have no post right now! <a href="/post/create-post"> create one?</a>
+          </h2>
+        </div>
+        <%}%>
+
+        </div>
+    </div>
+</div>
+
+<%-include("../../partials/footer.ejs")%>
+        <script src="/scripts/likeDslikeFromAllPost.js"></script>
+
+
+</body>
+
+</html>

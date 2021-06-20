@@ -1,0 +1,86 @@
+<%-include("../../partials/header.ejs")%>
+</head>
+
+<body>
+    <div class="container">
+        <%-include("../../partials/nav.ejs")%>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <%-include("../../partials/sidebar.ejs")%>
+            </div>
+            <div class="col-md-8 p-2 my-2 m-auto">
+                <div class="container">
+     <div class="card" style="width: 550px;">
+                        <div class="card-body p-3 mx-4">
+                            <h1 class="my-2">Edit your post</h1>
+                            <form action="/post/edit-post/<%=post._id%>" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="postTitle" class="form-label">Title</label>
+
+                                    <input class="form-control <%=error.postTitle?'is-invalid':''%>" type="text"
+                                        name="postTitle" id="postTitle" placeholder="post title"
+                                        value="<%=post.title%>" />
+
+                                    <%if(error.postTitle){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.postTitle%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="postTags" class="form-label">Tags</label>
+
+                                    <input type="text" name="postTags" id="postTags"
+                                        class="form-control <%=error.postTags?'is-invalid':''%>" value="<%=post.tags%>" %>"
+                                    placeholder="tags1,tags2,tags3..." />
+
+                                    <%if(error.postTags){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.postTags%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="postBody">Edit post</label>
+                                    <textarea name="postBody" id="postBody"
+                                        class="form-control <%=error.postBody?'is-invalid':''%>" cols="10"
+                                        rows="5"><%=post.body%></textarea>
+
+                                    <%if(error.postBody){%>
+                                    <div class="invalid-feedback"><strong>
+                                            <%=error.postBody%>
+                                        </strong>
+                                    </div>
+                                    <% }%>
+                                </div>
+
+                             
+                                    <img style="width: 450px;" src="<%=post.thumbnail%>" alt="<%=post.thumbnail%>" class="thumbnail">
+                                
+
+                                <div class="mb-2">
+                                    <label for="postPhoto" class="form-label">Change image</label>
+                                    <input class="form-control" type="file" name="postPhoto" id="postPhoto" value="<%=post.thumbnail%>">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm">Update post</button>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <%-include("../../partials/footer.ejs")%>
+</body>
+
+</html>
+

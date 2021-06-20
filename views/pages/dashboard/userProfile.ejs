@@ -1,0 +1,119 @@
+<%-include("../../partials/header.ejs")%>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <%-include("../../partials/nav.ejs")%>
+
+        <div class="row">
+            <div class="col-md-4">
+                <%-include("../../partials/sidebar.ejs")%>
+                </div>
+<div class="col-md-8 emp-profile">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="profile-img">
+                            <img src="<%= profile.user.profilePics  %> " alt=""/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="profile-head">
+                                    <h5>
+                                        <%=profile.user.name %> 
+                                    </h5>
+                                    <h6>
+                                        Web Developer and Designer
+                                    </h6>
+                                    <p class="proile-rating">RANKINGS : <span>N/A</span></p>
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="/dashboard" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="profile-edit-btn" href="/profile/edit-profile">Edit Profile</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8 mx-3 my-3">
+                        <div class="tab-content profile-tab" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>User Email</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><%= profile.user.email  %> </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Name</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p> <%=profile.user.name %> </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Phone</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p>N/A</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Profession</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p> Static: Web Developer and Designer</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>Total Post</label>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p><%= profile.posts.length  %> </p>
+                                            </div>
+                                        </div>
+                                          <div class="row">
+
+                                            <div class="col-md-6">
+                                                <label>Social Links: </label>
+                                            </div>
+                                            <div class="col-md-6">
+                                           <p>
+                                                 <a target="_blank" href="https://<%= profile.links.facebook?profile.links.facebook:'' %>"><%= profile.links.facebook?profile.links.facebook:'' %></a> 
+                                                    </p>
+                                                    <p>
+                                                 <a target="_blank" href="https://<%= profile.links.website?profile.links.website:'' %>"><%= profile.links.website?profile.links.website:'' %></a> 
+                                                    </p>
+                                                    <p>
+                                                 <a target="_blank" href="https://<%= profile.links.twitter?profile.links.twitter:'' %>"><%= profile.links.twitter?profile.links.twitter:'' %></a> 
+                                                    </p>
+                                                    <p>
+                                                 <a target="_blank" href="https://<%= profile.links.github?profile.links.github:'' %>"><%= profile.links.github?profile.links.github:'' %></a> 
+                                                    </p>
+                                        </div>
+                            </div>
+                        
+
+                        </div>
+                    </div>
+                </div>
+            </form>           
+        </div>
+                <%-include("../../partials/footer.ejs")%>
+</body>
+
+</html>

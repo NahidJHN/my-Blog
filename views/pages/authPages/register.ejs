@@ -1,0 +1,105 @@
+<%-include("../../partials/header.ejs")%>
+</head>
+<body>
+<div class="container">
+     <%-include("../../partials/nav.ejs")%>
+
+    <div class="row">
+        <div class="col-sm-6 m-auto">
+            <div
+                style="width: 500px"
+                class="m-auto card mt-3 rounded rounded-3 border border-secondery border-gradient border-2"
+            >
+                <div class="m-auto card-body py-3" style="width: 400px">
+                    <h1 class="">Register an account</h1>
+                    <% if(warningMsg.length>0) {%>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Warning: </strong> <%= warningMsg %>
+                        <button
+                            type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+                    </div>
+                    <%}%>
+                    <form action="/auth/register" method="POST" novalidate>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input
+                                type="name"
+                                name="name"
+                                id="name"
+                                placeholder="Enter Name"
+                                class="form-control <%=error.name? 'is-invalid':''%>"
+                                required
+                            />
+                            <%if(error.name){%>
+                            <div class="invalid-feedback"><strong><%=error.name%></strong></div>
+                            <% }%>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder="Enter email"
+                                class="form-control <%=error.email? 'is-invalid':''%>"
+                                required
+                            />
+                            <%if(error.email){%>
+                            <div class="invalid-feedback"><strong><%=error.email%></strong></div>
+                            <% }%>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="passsword"
+                                placeholder="Enter password"
+                                class="form-control <%=error.password? 'is-invalid':''%>"
+                                required
+                            />
+
+                            <%if(error.password){%>
+                            <div class="invalid-feedback"><strong><%=error.password%></strong></div>
+                            <% }%>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm-password" class="form-label"
+                                >Confirm password</label
+                            >
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                id="confirm-password"
+                                placeholder="Re-enter password"
+                                class="form-control <%=error.confirmPassword? 'is-invalid':''%>"
+                                required
+                            />
+                            <%if(error.confirmPassword){%>
+                            <div class="invalid-feedback">
+                                <strong><%=error.confirmPassword%></strong>
+                            </div>
+                            <% }%>
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </div>
+                    </form>
+                    <p class="my-3">
+                        Do you have any account ?
+                        <a class="mx-2" href="/auth/login">Login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%-include("../../partials/footer.ejs")%>
+</body>
+</html>

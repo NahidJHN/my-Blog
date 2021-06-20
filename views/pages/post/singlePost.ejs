@@ -1,0 +1,265 @@
+<%-include("../../partials/header.ejs")%>
+</head>
+<style>
+    .likeComment {
+        padding: 2px;
+        margin-bottom: 0 !important
+    }
+
+    .likeComment li {
+        cursor: pointer;
+    }
+
+    .addBorder {
+        border-top-width: 1px !important
+    }
+
+    #post_card {
+        border: 1px solid black;
+        padding: 2px
+    }
+
+    img.commentUserThumbnail {
+        width: 100%;
+        height: 100%;
+    }
+
+    .userThumbnail {
+        width: 40px;
+        height: 35px;
+        margin-right: 10px;
+
+    }
+
+    .mainComment {
+        width: 80%;
+        margin: auto;
+        margin-right: 20px;
+    }
+
+    img.commentImage {
+        width: 100%;
+        height: 100%;
+    }
+
+    .replySection {
+        width: 70%;
+        margin: auto;
+        margin-right: 36px;
+        margin-top: 10px;
+    }
+
+    .repliesInput {
+        width: 80%;
+        margin: auto;
+        margin-right: 21px;
+            display: flex;
+    }
+button#replyBtn {
+    margin-left: 10px;
+}
+    ul#commentReplies {
+        padding: 14px 25px;
+    }
+
+    body {
+        background: #eee
+    }
+
+    .date {
+        font-size: 11px
+    }
+
+    .comment-text {
+        font-size: 12px
+    }
+
+    .fs-12 {
+        font-size: 12px
+    }
+
+    .shadow-none {
+        box-shadow: none
+    }
+
+    .name {
+        color: #007bff
+    }
+
+    .cursor:hover {
+        color: blue
+    }
+
+    .cursor {
+        cursor: pointer
+    }
+
+    .textarea {
+        resize: none
+    }
+
+    .commentSection {
+        margin-top: 10px;
+    }
+    .sentbtn {
+    text-align: end;
+    margin-right: 26px;
+    margin-top: 11px;
+}
+</style>
+<script src="https://kit.fontawesome.com/1ad4267c2c.js" crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <%-include("../../partials/nav.ejs")%>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <%-include("../../partials/sidebar.ejs")%>
+
+            </div>
+            <div class="col-md-8">
+                <div id="post_card" class="card my-3" style="width: 32rem;margin-left: 25px;">
+                    <div class="d-flex p-2">
+                        <div style="margin-right: 10px;"><img style="width:35px; height:35px"
+                                src="<%=posts.author.profilePics%>" class="rounded-circle" alt="<%=posts.author.name%>">
+                        </div>
+                        <div>
+                            <strong style="line-height: 2;margin-bottom: 0;"><%=posts.author.name%> </strong> <span>
+                                posted about
+                                <%= posts.title%></span>
+                            <p style="color:lightslategray"> <span><%=moment(posts.createdAt)%></span>
+                            </p>
+
+                        </div>
+                    </div>
+                    <% if (posts.thumbnail) { %>
+                    <img style='width:100%;height:250px' src="<%= posts.thumbnail %> " class="card-img-top" alt="...">
+                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title"><%= posts.title %> </h5>
+                        <p class="card-text"><%= posts.body%> </p>
+                        <%if(user){%>
+                        <a class="btn btn-secondary btn-sm" href="/post/edit-post/<%=posts._id%>">Edit post</a>
+                        <a class="btn btn-warning btn-sm" href="/post/delete/<%=posts._id%>">Delete post</a>
+                        <%}%>
+                    </div>
+
+                    <ul class="d-flex likeComment">
+                        <li id="likePost" data-postid="<%= posts._id %>" class="list-group-item addBorder flex-fill text-center <%=user&&posts.likes.includes(user._id)?'text-primary':''%>"><i class="far fa-thumbs-up"></i>
+                           <%=user&&posts.likes.includes(user._id)?"Liked":"Like"%> (<%=posts.likes.length%>)</li>
+
+                        <li id="dislikePost" data-postid="<%= posts._id %>" class="list-group-item addBorder flex-fill text-center <%=user&&posts.dislikes.includes(user._id)?'text-warning':''%>"><i class="far fa-thumbs-down"></i>
+                            <%=user&&posts.dislikes.includes(user._id)?"Disliked":"Dislike"%> (<%=posts.dislikes.length%>)</li>
+
+                       <label for="comment"><li class="list-group-item addBorder flex-fill text-center"><i class="far fa-comment"></i>
+                            Comment (<%=posts.comment.length%>)</li></label> 
+                    </ul>
+                    <h3 class="p-2">Leave a Comment</h1>
+                  
+                        <input
+                        style="width:90%; margin: auto;"
+                        type="text" 
+                        class="form-control mt-2 px-3" 
+                        name="comment"
+                        id="comment"
+                         data-post="<%= posts._id %>"
+                        <%if(!user){%>
+                        disabled
+                        placeholder="Login to comment"
+                        <%}%>
+                       placeholder="Write your comment"
+
+                        />
+                        <div class="sentbtn">
+                        <button class="btn btn-sm btn-danger" id="commentBtn">send</button>
+                            </div>
+                        <div id="commentHolder" class="commentWraper">
+                            <ul id="commentReplies" class="list-group">
+                                <li style="list-style-type: none;" class="list-item">
+                                    <% if (posts.comment.length===0) { %>
+                        <h3 id="noComment" class="text-muted">There is no comment to show!</h3>
+                        <% }else{ %>
+                        <%for(let comment of posts.comment.reverse()) {%>
+                        <div class="commentSection">
+                            <div class=" d-flex">
+                                <div class="userThumbnail mr-3">
+                                    <img src="<%=comment.user.profilePics%>"
+                                        class="commentUserThumbnail thumbnail rounded-circle" alt="user-pics">
+                                </div>
+                                <div style="width: 100%;">
+                                    <p style="margin-bottom:0px"><a style="text-align: end;text-decoration: none;"
+                                            href="/profile/<%=comment.user._id  %> "><%=comment.user.name%></a> <span
+                                            style="margin-left: 10px;"><%=comment.body%></span>&nbsp; &nbsp;&nbsp;
+                                        <small style="margin-bottom: 0;"
+                                            class="text-muted"><%=moment(comment.createdAt)%></small></p>
+
+                                </div>
+                            </div>
+ 
+
+
+
+
+                            <!-- replies section -->
+                            <div class="repliesWraper">
+
+                                <div style="width: 80%; align-items:flex-end;" class="replySection">
+                                    <%if(comment.replies.length!==0){%>
+                                    <%for(reply of comment.replies){%>
+                                    <div class="repliesDiv">
+                                        <div class="commentSection d-flex">
+                                            <div style="width:40px" class="userThumbnail mr-3">
+                                                <img src="<%=reply.user.profilePics%>"
+                                                    class="commentUserThumbnail thumbnail rounded-circle" alt="">
+                                            </div>
+                                            <div style="width: 100%;">
+                                                <p style="margin-bottom:0px"><a
+                                                        style="text-align: end;text-decoration: none;"
+                                                        href="/profile/<%=reply.user._id %> "><%=reply.user.name%></a> <span
+                                                        style="margin-left: 10px;"><%=reply.body%></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <%}%>
+                                        <%}%>
+
+                                    <div class="repliesInput">
+                                        <input class="form-control" type="text" name="replies"
+                                            data-comment="<%=comment._id%>" placeholder="Reply" />
+                                            
+                        <button class="btn btn-sm btn-danger" id="replyBtn">send</button>
+                            
+                                    </div>
+                                </div>
+                            </div>
+
+                            <%}%>
+                            <%}%>
+                            </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <%-include("../../partials/footer.ejs")%>
+    <script src="/scripts/likeDislike.js"></script>
+    <script src="/scripts/commentScripts.js"></script>
+
+    
+
+
+</body>
+</html>
