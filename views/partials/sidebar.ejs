@@ -19,7 +19,7 @@
 </svg>
 
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-light py-5 mt-1 position-fixed " style="width: 350px;">
-    <a href=<%= user?`"/profile/${user._id}"`:"/auth/login"  %> class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    <a href=<%= user?`/profile/${user._id}`:"/auth/login"  %> class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <span class="fs-4">
             <%if(user) {%>
             <%= user.name %>
