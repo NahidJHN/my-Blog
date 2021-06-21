@@ -5,8 +5,9 @@ const profilePicsUploadController = async (req, res, next) => {
 
     try {
         if (req.file) {
-            await fs.promises.unlink(`public${profilePics}`);
-
+          if (req.user.profilePics !== "/uploads/default.png") {
+                await fs.promises.unlink(`public${profilePics}`);
+            }
             await User.findOneAndUpdate(
                 {
                     _id: req.user._id,
