@@ -286,7 +286,7 @@ const postEditPostController = async (req, res, next) => {
         let findPost;
 
         if (req.file) {
-            await fs.promises.unlink(`public${thumbnail}`);
+           thumbnail && await fs.promises.unlink(`public${thumbnail}`);
             thumbnail = `/uploads/${req.file.filename}`;
         }
 
